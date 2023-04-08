@@ -1,0 +1,32 @@
+//turn a binary tree to a binary search tree
+class Solution
+{
+    static int index = 0;
+
+    private void inOrder(Node root, List<Integer> list, boolean swap) {
+        if (root == null || (swap && index >= list.size())) {
+            return;
+        }
+        inOrder(root.left, list, swap);
+        if (!swap) {
+            list.add(root.data);
+        } else {
+            root.data = list.get(index);
+            index += 1;
+        }
+        inOrder(root.right, list, swap);
+    }
+
+
+    // The given root is the root of the Binary Tree
+    // Return the root of the generated BST
+    Node binaryTreeToBST(Node root)
+    {
+        List<Integer> list = new ArrayList<>();
+        inOrder(root, list,false);
+        list.sort(Comparator.comparingInt(a -> a));
+        index = 0;
+        inOrder(root,list,true);
+        return root;
+    }
+}
